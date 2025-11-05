@@ -1,0 +1,438 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IFE Barquisimeto – Sistema de Suspensión Hidráulica</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #f5f7fa;
+      color: #2c3e50;
+      line-height: 1.7;
+    }
+    header {
+      background: #0d3b66;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      opacity: 0.95;
+      font-size: 1.1rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    nav {
+      background: #1a5f9e;
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      justify-content: center;
+    }
+    nav li a {
+      color: white;
+      text-decoration: none;
+      padding: 1rem 1.2rem;
+      display: block;
+      transition: background 0.3s;
+    }
+    nav li a:hover {
+      background: #0d3b66;
+    }
+    section {
+      margin-bottom: 3rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    h2 {
+      color: #0d3b66;
+      margin-bottom: 1.4rem;
+      font-size: 2rem;
+      border-bottom: 2px solid #eaecef;
+      padding-bottom: 0.5rem;
+    }
+    h3 {
+      color: #1a5f9e;
+      margin: 1.2rem 0 0.8rem;
+    }
+    p, li {
+      margin-bottom: 1rem;
+    }
+    ul, ol {
+      padding-left: 1.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 1.5rem 0;
+    }
+    .tab-button {
+      padding: 0.7rem 1.4rem;
+      background: #e0e7ff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #2c3e50;
+      transition: all 0.3s;
+    }
+    .tab-button:hover {
+      background: #c7d2fe;
+    }
+    .tab-button.active {
+      background: #4f46e5;
+      color: white;
+    }
+    .tab-content {
+      display: none;
+      padding: 1.5rem;
+      background: #f8fafc;
+      border-radius: 10px;
+      margin-top: 15px;
+      border-left: 4px solid #4f46e5;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .simulation {
+      text-align: center;
+      margin: 2.5rem 0;
+      padding: 1.5rem;
+      background: #f0f9ff;
+      border-radius: 12px;
+    }
+    .lift-platform {
+      width: 220px;
+      height: 70px;
+      background: linear-gradient(to right, #3b82f6, #60a5fa);
+      margin: 0 auto;
+      position: relative;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .lift-rod {
+      width: 12px;
+      height: 120px;
+      background: #4b5563;
+      margin: 0 auto;
+      transform-origin: bottom;
+      border-radius: 6px;
+    }
+    .controls {
+      margin-top: 25px;
+    }
+    .btn {
+      padding: 0.8rem 1.5rem;
+      margin: 0 12px;
+      background: #1e40af;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #1e3a8a;
+    }
+    .accordion {
+      margin: 1.8rem 0;
+    }
+    .accordion-item {
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .accordion-header {
+      padding: 1.2rem;
+      background: #dbeafe;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #1e40af;
+    }
+    .accordion-content {
+      padding: 0 1.2rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      background: #f8fafc;
+    }
+    .accordion-content.show {
+      padding: 1.2rem;
+      max-height: 600px;
+    }
+    .highlight {
+      background: #fffbeb;
+      padding: 1.5rem;
+      border-left: 4px solid #f59e0b;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      background: #0d3b66;
+      color: white;
+      margin-top: 3rem;
+    }
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+      }
+      header h1 {
+        font-size: 1.7rem;
+      }
+      .lift-platform {
+        width: 180px;
+        height: 60px;
+        font-size: 0.9rem;
+      }
+      .lift-rod {
+        height: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Diseño de un Sistema de Suspensión Hidráulica</h1>
+    <p>Medida de control ergonómico para el personal operativo del IFE Barquisimeto</p>
+    <p>Michelle Quintero &bull; Lisny Alvarado &bull; PNF Higiene y Seguridad Laboral – UPTAEB</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#diagnostico">Diagnóstico</a></li>
+      <li><a href="#normativa">Normativa</a></li>
+      <li><a href="#diseno">Diseño Técnico</a></li>
+      <li><a href="#simulacion">Simulación</a></li>
+      <li><a href="#factibilidad">Factibilidad</a></li>
+      <li><a href="#impacto">Impacto Social</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <!-- Diagnóstico -->
+    <section id="diagnostico">
+      <h2>1. Diagnóstico Situacional</h2>
+      <p>En el IFE Barquisimeto, el personal operativo enfrenta riesgos disergonómicos severos:</p>
+      <ul>
+        <li>Manipulación manual de cargas >250 kg</li>
+        <li>Posturas forzadas al acceder a vagones mediante escaleras</li>
+        <li>Riesgo de caídas en andenes y plataformas</li>
+        <li>Fatiga muscular y trastornos musculoesqueléticos (TME)</li>
+        <li>Exposición a polvo, vapores, objetos punzocortantes y virus</li>
+      </ul>
+      <p>El 100% de los trabajadores encuestados reportan posturas incómodas y esfuerzo excesivo diario.</p>
+      <div class="highlight">
+        <strong>Conclusión diagnóstica:</strong> La manipulación manual de cargas pesadas sin asistencia mecánica constituye la principal causa de lesiones laborales en el IFE Barquisimeto.
+      </div>
+    </section>
+
+    <!-- Normativa -->
+    <section id="normativa">
+      <h2>2. Marco Normativo</h2>
+      <div class="tabs">
+        <button class="tab-button active" data-tab="venezuela">Venezuela</button>
+        <button class="tab-button" data-tab="internacional">Internacional</button>
+      </div>
+      <div class="tab-content active" id="venezuela">
+        <h3>Normas y Leyes Nacionales</h3>
+        <ul>
+          <li><strong>Constitución de la República Bolivariana de Venezuela (1999)</strong><br>
+            Art. 87: Garantiza condiciones de seguridad, higiene y ambiente de trabajo adecuados.<br>
+            Art. 89: Principio de progresividad de los derechos.</li>
+          <li><strong>LOPCYMAT (2005)</strong><br>
+            Art. 56: Prioriza medidas de ingeniería sobre administrativas o EPP.<br>
+            Art. 59: Prohíbe posturas forzadas y sobreesfuerzos físicos.</li>
+          <li><strong>COVENIN 2273:1991</strong>: Principios ergonómicos en el diseño de sistemas de trabajo.<br>
+            Requiere adaptar el puesto a las características antropométricas y fisiológicas del trabajador.</li>
+          <li><strong>COVENIN 2260:1988</strong>: Guía para programas de Higiene y Seguridad Industrial.</li>
+          <li><strong>COVENIN 4004:2000</strong>: Sistema de Gestión de Seguridad y Salud en el Trabajo.</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="internacional">
+        <h3>Estándares Internacionales</h3>
+        <ul>
+          <li><strong>Convenio OIT N.º 155 (1981)</strong>: Ratificado por Venezuela. Obliga a prevenir riesgos en su origen.</li>
+          <li><strong>ISO 11228-1:2003</strong>: Límite de 25 kg en levantamiento manual. Exige asistencia mecánica si se supera.</li>
+          <li><strong>ISO 12100:2010</strong>: Jerarquía de controles – prioriza ingeniería y diseño seguro.</li>
+          <li><strong>ISO 6385:2016</strong>: Diseño de sistemas de trabajo centrado en el ser humano.</li>
+          <li><strong>ISO 21542:2011</strong>: Accesibilidad universal en entornos construidos.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Diseño técnico -->
+    <section id="diseno">
+      <h2>3. Diseño Técnico del Sistema</h2>
+      <h3>Especificaciones Clave</h3>
+      <ul>
+        <li><strong>Capacidad</strong>: 750 kg (Carga nominal: 250 kg × FS = 3)</li>
+        <li><strong>Altura de elevación</strong>: 345 mm</li>
+        <li><strong>Velocidad</strong>: ≤ 0.05 m/s (elevación suave en ~7 s)</li>
+        <li><strong>Plataforma</strong>: Acero inoxidable AISI 304, superficie antideslizante</li>
+        <li><strong>Seguridad</strong>: Barandillas (900 mm), sensores de peso, botón de emergencia (ISO 13850)</li>
+        <li><strong>Fluido</strong>: Biodegradable (ISO 15380)</li>
+      </ul>
+
+      <h3>Normas Técnicas Aplicadas</h3>
+      <div class="accordion">
+        <div class="accordion-item">
+          <div class="accordion-header">COVENIN 2273:1991<span>▼</span></div>
+          <div class="accordion-content">
+            <p>“Las exigencias del puesto de trabajo deben adaptarse a las características físicas, mentales y de personalidad de los trabajadores.” El sistema hidráulico se adapta a las dimensiones reales del operario y elimina posturas forzadas.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header">ISO 12100:2010<span>▼</span></div>
+          <div class="accordion-content">
+            <p>“Los riesgos se eliminan mediante medidas inherentes al diseño.” El sistema actúa en la fuente del riesgo, no en el comportamiento del trabajador.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header">LOPCYMAT Art. 56<span>▼</span></div>
+          <div class="accordion-content">
+            <p>“Priorizando las medidas de ingeniería.” Esta norma justifica legalmente la elección del sistema hidráulico como solución primaria.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simulación -->
+    <section id="simulacion">
+      <h2>4. Simulación Interactiva</h2>
+      <p>Interactúa con el sistema: eleva y desciende la plataforma hidráulica.</p>
+      <div class="simulation">
+        <div class="lift-rod" id="rod"></div>
+        <div class="lift-platform" id="platform">Plataforma Hidráulica<br>(750 kg FS=3)</div>
+        <div class="controls">
+          <button class="btn" onclick="movePlatform('up')">▲ Elevar</button>
+          <button class="btn" onclick="movePlatform('down')">▼ Descender</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Factibilidad -->
+    <section id="factibilidad">
+      <h2>5. Factibilidad Integral</h2>
+      <h3>Indicadores Clave</h3>
+      <ul>
+        <li><strong>Inversión inicial</strong>: USD 3,650</li>
+        <li><strong>Beneficio anual estimado</strong>: USD 3,000</li>
+        <li><strong>ROI</strong>: 82.2% anual</li>
+        <li><strong>Payback</strong>: 14.6 meses</li>
+        <li><strong>Vida útil</strong>: 10 años</li>
+        <li><strong>Empleos indirectos generados</strong>: ~16</li>
+      </ul>
+      <div class="highlight">
+        <strong>Conclusión:</strong> El sistema es técnicamente robusto, económicamente viable, ambientalmente sostenible (fluido biodegradable) y socialmente justificable.
+      </div>
+    </section>
+
+    <!-- Impacto social -->
+    <section id="impacto">
+      <h2>6. Impacto Social y Profesional</h2>
+      <h3>Beneficiarios</h3>
+      <ul>
+        <li><strong>Directos (13)</strong>: Personal operativo del IFE Barquisimeto (reguladores, operadores, supervisores).</li>
+        <li><strong>Indirectos (~16 + usuarios)</strong>:
+          <ul>
+            <li>Usuarios con movilidad reducida</li>
+            <li>Personal de mantenimiento y construcción</li>
+            <li>Proveedores de materiales</li>
+            <li>Instituciones de salud (menos lesiones)</li>
+          </ul>
+        </li>
+      </ul>
+      <h3>Contribución al Plan de la Patria 2025–2031</h3>
+      <p>El proyecto se alinea con las 7 Transformaciones, especialmente:</p>
+      <ul>
+        <li><strong>Patria Productiva</strong>: Mayor eficiencia operativa.</li>
+        <li><strong>Patria Segura</strong>: Reducción de accidentes laborales.</li>
+        <li><strong>Patria Tecnológica</strong>: Aplicación de ingeniería avanzada.</li>
+        <li><strong>Patria Socialista</strong>: Dignificación del trabajo y equidad.</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer>
+    <p>Proyecto Académico – Programa Nacional de Formación en Higiene y Seguridad Laboral</p>
+    <p>UPTAEB &bull; IFE Barquisimeto &bull; 2025</p>
+  </footer>
+
+  <script>
+    // Tabs normativa
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById(button.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Acordion
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        content.classList.toggle('show');
+        const arrow = header.querySelector('span');
+        arrow.textContent = content.classList.contains('show') ? '▲' : '▼';
+      });
+    });
+
+    // Simulación hidráulica
+    let height = 0;
+    const maxHeight = 120; // px
+    function movePlatform(direction) {
+      const platform = document.getElementById('platform');
+      const rod = document.getElementById('rod');
+      if (direction === 'up' && height < maxHeight) {
+        height += 20;
+      } else if (direction === 'down' && height > 0) {
+        height -= 20;
+      }
+      platform.style.transform = `translateY(${-height}px)`;
+      rod.style.height = `${120 + height}px`;
+    }
+  </script>
+</body>
+</html>
+
